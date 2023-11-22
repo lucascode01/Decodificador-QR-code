@@ -1,1 +1,1 @@
-# Decodificador-QR-code
+# Gerador-QR-code
