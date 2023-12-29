@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de QR Code</title>
+</head>
+
+<style>
+    body {
+        background: url('/static/hoia.jpg') center center fixed; /* Adiciona a imagem de plano de fundo */
+        background-size: cover; /* Faz com que a imagem de fundo cubra toda a tela */
+        color: #ffffff; /* Define a cor do texto como vinho */
+        font-family: Arial, sans-serif; /* Define a fonte do texto */
+        height: 100vh; /* Define a altura do corpo como 100% da altura da tela */
+        margin: 0; /* Remove margens padrão do corpo */
+        padding: 20px; /* Adiciona algum preenchimento para afastar o conteúdo das bordas */
+        text-align: center;
+    }
+</style>
+
+
+<body>
+    <h1>Gerador de QR Code</h1>
+    
+    <label for="inputData">Insira os dados para gerar o QR Code:</label>
+    <input type="text" id="inputData">
+    <button onclick="gerarQRCode()">Gerar QR Code</button>
+
+    <div id="qrcode"></div>
+
+    <script>
+        function gerarQRCode() {
+            var inputData = document.getElementById('inputData').value;
+
+            // Faz uma solicitação AJAX para a API Flask
+            fetch('/gerar_qrcode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'data': inputData }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Exibe o QR Code gerado
+                    document.getElementById('qrcode').innerHTML = '<img src="static/myqrcode.png" alt="QR Code">';
+                } else {
+                    alert('Erro ao gerar o QR Code: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erro na solicitação:', error);
+            });
+        }
+    </script>
+</body>
+</html>
